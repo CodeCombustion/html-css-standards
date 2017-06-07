@@ -3,6 +3,7 @@
 ## CSS Naming
 
 **Block-Element-Modifier**
+
 It is a known fact that the right styleguide can significantly increase development speed, debugging, and the implementation of new features in legacy code. Sadly, most CSS codebases are sometimes developed without any structure or naming conventions. This leads to an unmaintainable CSS codebase in the long term.
 
 The BEM approach ensures that everyone who participates in the development of a website works with a single codebase and speaks the same language. Using proper naming will prepare you for the changes in design of the website.
@@ -69,20 +70,23 @@ Modifier is an extra class name which you add to a block/element DOM node. Add m
 	<div class="block block-size-big block-shadow-yes">...</div>
 ```
 
-
-CSS
-
 Use modifier class name as selector:
 
+```css
 .block-hidden { }
+```
 
 To alter elements based on a block-level modifier:
 
+```css
 .block-mod .block-elem { }
+```
 
 Element modifier:
 
+```css
 .block-elem-mod { }
+```
 
 Example
 
@@ -97,11 +101,11 @@ Suppose you have block form with modifiers theme: "xmas" and simple: true and wi
 
 ```css
 .form { }
-.form--theme-xmas { }
-.form--simple { }
-.form__input { }
-.form__submit { }
-.form__submit--disabled { }
+.form-theme-xmas { }
+.form-simple { }
+.form-input { }
+.form-submit { }
+.form-submit-is-disabled { }
 ```
 
 ## Capitalization
