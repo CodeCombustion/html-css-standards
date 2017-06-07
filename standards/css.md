@@ -1,107 +1,139 @@
 # <a href="#formatting"></a>CSS Formatting
 
-## Capitalization
+## CSS Naming
 
-Use camelCase for selector names and lowercase for properties & property values (unless strings).
+**Block-Element-Modifier**
+It is a known fact that the right styleguide can significantly increase development speed, debugging, and the implementation of new features in legacy code. Sadly, most CSS codebases are sometimes developed without any structure or naming conventions. This leads to an unmaintainable CSS codebase in the long term.
+
+The BEM approach ensures that everyone who participates in the development of a website works with a single codebase and speaks the same language. Using proper naming will prepare you for the changes in design of the website.
+Block
+
+Encapsulates a standalone entity that is meaningful on its own. While blocks can be nested and interact with each other, semantically they remain equal; there is no precedence or hierarchy. Holistic entities without DOM representation (such as controllers or models) can be blocks as well.
+Naming
+
+**Block**
+
+Block names may consist of Latin letters, digits, and dashes. To form a CSS class, add a short prefix for namespacing: .block
+HTML
+
+Any DOM node can be a block if it accepts a class name.
+
+```html
+<div class="block">...</div>
+```
+
+Use class name selector only
+No tag name or ids
+No dependency on other blocks/elements on a page
 
 ```css
-.mySelector {
+.block { color: #042; }
+```
+
+**Element**
+
+Parts of a block and have no standalone meaning. Any element is semantically tied to its block.
+Naming
+
+Element names may consist of Latin letters, digits, dashes and underscores. CSS class is formed as block name plus one dash plus element name: .block-elem
+HTML
+
+Any DOM node within a block can be an element. Within a given block, all elements are semantically equal.
+```html
+<div class="block">
+    ...
+    <span class="block-elem"></span>
+</div>
+```
+
+Use class name selector only
+No tag name or ids
+No dependency on other blocks/elements on a page
+
+```css
+.block__elem { color: #042; }
+```
+
+
+**Modifier**
+
+Flags on blocks or elements. Use them to change appearance, behavior or state.
+Naming
+
+Modifier names may consist of Latin letters, digits and dashes. CSS class is formed as block’s or element’s name plus one dash: .block-mod or .block-elem--mod and .block-color-black with .block-color-red. Spaces in complicated modifiers are replaced by dash.
+
+Modifier is an extra class name which you add to a block/element DOM node. Add modifier classes only to blocks/elements they modify, and keep the original class:
+
+```html
+<div class="block block-mod">...</div>
+	<div class="block block-size-big block-shadow-yes">...</div>
+```
+
+
+CSS
+
+Use modifier class name as selector:
+
+.block-hidden { }
+
+To alter elements based on a block-level modifier:
+
+.block-mod .block-elem { }
+
+Element modifier:
+
+.block-elem-mod { }
+
+Example
+
+Suppose you have block form with modifiers theme: "xmas" and simple: true and with elements input and submit, and element submit with its own modifier disabled: true for not submitting form while it is not filled:
+
+```html
+<form class="form form-theme-xmas form-simple">
+  <input class="form-input" type="text" />
+  <input class="form-submit form-submit-disabled" type="submit" />
+</form>
+```
+
+```css
+.form { }
+.form--theme-xmas { }
+.form--simple { }
+.form__input { }
+.form__submit { }
+.form__submit--disabled { }
+```
+
+## Capitalization
+
+Use lowercase with dashes for selector names and lowercase for properties & property values (unless strings).
+
+```css
+.my-selector {
     color: #ff0000;
     font-family: Times, "Times New Roman", serif;
 }
 ```
 
-## Name Delimiters
-
-For more information on classes, class members, class extensions and class mixins, read the [methodology](/standards/methodology.md/).
-
 **Class Names**
 
-Use camelCase for class names.
+Use lowercase with dashes for class names.
 
 ```css
-.featurePromo {
+.feature-promo {
     padding: 10px;
     border: 1px solid #bbbbbb;
     background: #ffffff;
 }
 ```
 
-**Sub Components**
-
-Use a hyphen before a class member (sub-component) name, prefixed with the base class name. The class member name is camelCased.
-
-```css
-.featurePromo-hd {
-    margin-bottom: 10px;
-}
-
-.featurePromo-bd {
-    position: relative;
-    padding: 5px;
-}
-
-.featurePromo-ft {
-    border-top: 1px solid #000000;
-}
-
-.featurePromo-statusMessage {
-    padding: 10px;
-    border: 1px dotted #ff0000;
-}
-```
-
-**Extensions**
-
-Use an underscore before a class extension name, prefixed with the base class or sub-component class it extends. The extension name is camelCased.
-
-```css
-.featurePromo_primary {
-    border-color: #ff0000;
-    background: #aa6600;
-}
-
-.featurePromo_lastChild {
-    border: none;
-}
-
-.featurePromo-bd_inset {
-    padding: 20px;
-}
-```
-
-**Mixins**
-
-Use `mix-` followed by the base class, then the rest of the class extension name. The extension name is camelCased.
-
-```css
-.hdg {
-    font-family: arial, helvetica, sans-serif;
-    font-size: 32px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #000000;
-}
-
-.hdg_1 {
-    font-size: 30px;
-}
-
-.hdg_2 {
-    font-size: 20px;
-}
-
-.mix-hdg_brandColor {
-    color: #cccccc;
-}
-```
 
 **States**
 
-Use an underscore between a state class and the class it extends. Prefix the state class name with `is`. The state name is camelCased
+Use a dash between a state class and the class it extends. Prefix the state class name with `is-`. The state name is lowercased.
 
 ```css
-.menuItem_isActive {
+.menu-item-is-active {
     font-weight: bold;
     text-decoration: underline;
 }
@@ -116,11 +148,11 @@ Name class theme extensions prefixed with `theme-` followed by the base class, t
     background: #333333;
 }
 
-.theme-masthead_cats {
+.theme-masthead-cats {
     background: transparent url("../images/cat-bg.jpg") no-repeat 0 0;
 }
 
-.theme-masthead_wolfPack {
+.theme-masthead-wolfpack {
     background: transparent url("../images/3-wolves-bg.jpg") no-repeat 0 0;
 }
 ```
@@ -272,9 +304,9 @@ Include a space after the opening bracket and before the closing bracket.
 No line break is required between rule blocks when the selectors are part of the same object and the properties match.
 
 ```css
-.icn_twitter { background-position: 0 -100px; }
-.icn_facebook { background-position: 0 -200px; }
-.icn_youtube { background-position: 0 -300px; }
+.icon-twitter { background-position: 0 -100px; }
+.icon-facebook { background-position: 0 -200px; }
+.icon-youtube { background-position: 0 -300px; }
 ```
 
 ## Quotes
@@ -392,7 +424,7 @@ Horizontal List
 
 ## Hexadecimal Notation
 
-Always use six character and lowercase hexadecimal notation.
+Always use six character and lowercase hexadecimal notation. Visual Studio can convert color names into hexadecimal notation for you.
 
 ```css
 .selector {
@@ -405,7 +437,9 @@ Always use six character and lowercase hexadecimal notation.
 Mark todos and action items with a comment that includes `TODO`. Be sure that `TODO` is always uppercase.
 
 ```css
-/* TODO - Review content styles */
+/*
+TODO - Review content styles
+*/
 .selector {
     color: #ff0000;
 }
