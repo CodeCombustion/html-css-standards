@@ -237,7 +237,7 @@ If possible, it is preferable to wrap inputs with the corresponding label.
 
 ## Form Button Values
 
-Form input buttons require a `value` attribute.
+Input buttons within a submitted form require a `value` attribute.
 
 ```html
 <input type="submit" value="Submit" />
@@ -247,7 +247,11 @@ Form input buttons require a `value` attribute.
 <input type="reset" value="Reset" />
 ```
 
-Image type inputs require an `alt` attribute.
+```html
+<button type="button" value="Submit">Submit</button>
+```
+
+Image type inputs *require* an `alt` attribute.
 
 ```html
 <input type="image" src="button.png" alt="Submit" />
@@ -263,11 +267,17 @@ Button elements require a value between the opening and closing tags.
 
 Use placeholder text to provide a hint to the user.
 
-Whenever possible, do not use `placeholder` text as a replacement for a `<label>`. When necessary, opt for visually hiding the label instead.
+Do not use `placeholder` text as a replacement for a `<label>`. When necessary, opt for visually hiding the label instead.
 
 ```html
-<label for="email" class="isVisuallyHidden">Email</label>
+<label for="email" class="visually-hidden">Email</label>
 <input type="email" id="email" placeholder="user@domain.com" />
+```
+
+```html
+<label class="visually-hidden">Email
+    <input type="email" placeholder="user@domain.com" />
+</label>
 ```
 
 ## Form Grouped Controls
@@ -333,14 +343,14 @@ When hiding content on a page, choose the appropriate method.
 
 Using `display: none;` or `visibility: hidden;` will hide content from a screen reader.
 
-If content is meant to be available to a screen reader but not to a sighted user, hide the content by using a utility class.
+If content is meant to be available to a screen reader but not visible to users, hide the content by using a utility class.
 
 ```html
-<h2 class="isVisuallyHidden">Featured Articles</h2>
+<h2 class="visually-hidden">Featured Articles</h2>
 ```
 
 ```css
-.isVisuallyHidden {
+.visually-hidden {
     width: 1px;
     height: 1px;
     margin: -1px;
