@@ -1,6 +1,6 @@
 # Methodology
 
-The following key points and ideas make up the methodology of "how" and "why" we do Front-End Development at the Nerdery the way we do. Most of these topics are touched on in the standards in the form of rules to follow, but they will be covered more in depth in an effort to better explain and stress the importance of our methodology.
+The following key points and ideas make up the methodology of "how" and "why" we do Front-End Development the way we do. Most of these topics are touched on in the standards in the form of rules to follow, but they will be covered more in depth in an effort to better explain and stress the importance of methodology.
 
 ## Modularity
 
@@ -14,9 +14,9 @@ Objects come in all shapes and sizes. A button is an object. A heading is an obj
 
 Objects are the Lego blocks that are assembled into full blown pages and sites. Writing CSS to be modular means removing contextual dependencies and writing defensive selectors that limit the depth of applicability.
 
-## CSS Selectors
+## JS & CSS Selectors
 
-One of the quickest ways to improve the modularity and flexibility of code is to think harder about the selectors you choose. The first step is to eliminate IDs from CSS selection. IDs do nothing that classes can't also do, but instantly limit reuse and flexibility as they cannot appear on a page more than once. They are also difficult to work with due to their high specificity. The ideal selector is a single classname like `.masthead`.
+One of the quickest ways to improve the modularity and flexibility of code is to think harder about the selectors you choose. The first step is to eliminate IDs from CSS and JavaScript selection. IDs do nothing that classes can't also do, but instantly limit reuse and flexibility as they cannot appear on a page more than once. They are also difficult to work with due to their high specificity. The ideal selector is a single classname like `.masthead`.
 
 The next step is to avoid contextual selection, especially across unrelated objects. By styling an object based on context, we again reduce flexibility by needlessly tying an object's appearance to some unrelated class farther up the DOM tree. Now we've created a situation where those styles can only be used within that container, whereas had we simply written the object without contextual selection, we would be free to move that module anywhere in our site and it would still function as it should.
 
@@ -26,30 +26,30 @@ Contextual selectors also add weight to our selectors, making them more difficul
 
 ```css
 /* DO */
-.utilNav { }
+.utility-nav { }
 
 /* DO NOT */
-.masthead .utilNav { }
+.masthead .utility-nav { }
 ```
 
 Avoid overqualified selectors. Similar to contextual selectors, overqualification limits flexibility and needlessly increases selector weight.
 
 ```css
 /* DO */
-.utilNav { }
+.utility-nav { }
 
 /* DO NOT */
-div.utilNav { }
+div.utility-nav { }
 ```
 
 Avoid using elements in selectors. Elements are risky for a couple of reasons. First, they limit the markup elements we can apply a given class to - making semantic decisions for us in our CSS. Second, they have a high depth of applicability - meaning the likelihood that something will accidentally receive or collide with those styles goes up.
 
 ```css
 /* DO */
-.utilNav-item { }
+.utility-nav-item { }
 
 /* DO NOT */
-.utilNav a span { }
+.utility-nav a span { }
 ```
 
 By simply avoiding IDs, elements and contextual selection, the potential for reuse and modularity increases dramatically.
@@ -58,12 +58,12 @@ One false sense of reuse is the use of stacked selectors. In most cases, stacked
 
 ```css
 /* DO */
-.utilNav { }
+.utility-nav { }
 
 /* DO NOT */
-.newsNav,
-.eventsNav,
-.legalNav { }
+.news-nav,
+.events-nav,
+.legal-nav { }
 ```
 
 ## Object Identification
@@ -91,18 +91,18 @@ Or objects may consist of base class and any number of class members (sub-compon
 A very common pattern is for objects to have head, body and foot components.
 
 ```html
-<div class="featurePanel">
-    <div class="featurePanel-hd"> ... </div>
-    <div class="featurePanel-bd"> ... </div>
-    <div class="featurePanel-ft"> ... </div>
+<div class="feature-panel">
+    <div class="feature-panel-head"> ... </div>
+    <div class="feature-panel-body"> ... </div>
+    <div class="feature-panel-foot"> ... </div>
 </div>
 ```
 
 Components are frequently optional, and certainly aren't restricted to head, body and foot items.
 
 ```html
-<div class="featurePanel">
-    <div class="featurePanel-bd"> ... </div>
+<div class="feature-panel">
+    <div class="feature-panel-body"> ... </div>
 </div>
 ```
 
@@ -111,7 +111,7 @@ Components are frequently optional, and certainly aren't restricted to head, bod
 We can account for variations on an object by creating an extension to that object. We prefix the name of an extension with the base class name, followed by an underscore to indicate an extension.
 
 ```html
-<div class="object object_extension"> ... </div>
+<div class="object object-extension"> ... </div>
 ```
 
 Extending objects is an important habit to get into. Always directly alter the object you want to change, instead of styling it contextually from a different object.
@@ -119,7 +119,7 @@ Extending objects is an important habit to get into. Always directly alter the o
 ```html
 <!-- DO -->
 <div class="box">
-    <a href="#" class="btn btn_secondary">Go Back</a>
+    <a href="#" class="btn btn-secondary">Go Back</a>
 </div>
 ```
 
@@ -142,47 +142,17 @@ Extending objects is an important habit to get into. Always directly alter the o
 .box .btn { color: #999999; }
 ```
 
-## Object Mixins
-
-Extensions to an object should follow a single ancestry chain. Two sub-classes of an object should not appear on the same object if they are of a different ancestry chain. For these types of scenarios, we have mixins.
-
-Mixins are a type of class extension that do not create a sub-class, but rather can be added to (mixed with) any super or sub-class of object. If a type of object has many variations that cannot be elegantly defined into discrete sub-classes, mixins may be the best solution. Mixins are generally an undesirable way to write CSS and should only be used when that is the best option availabe - usually when a design lacks consistency. Often it is better to create more base classes than to try and shoehorn everything into a single object with a lot of mixins.
-
-We indicate an object mixin by prefixing the name with "mix-" and the base class name.
-
-```html
-<div class="object mix-object_extension"> ... </div>
-```
-
-```html
-<h1 class="hdg hdg_h1"> ... </h1>
-<h1 class="hdg hdg_h1 mix-hdg_cap"> ... </h1>
-<h1 class="hdg hdg_h2"> ... </h1>
-<h1 class="hdg hdg_h2 mix-hdg_cap"> ... </h1>
-```
-
-```css
-.hdg {
-    font-family: arial, helvetica, sans-serif;
-    font-weight: bold;
-}
-
-.hdg_h1 { font-size: 30px; }
-.hdg_h2 { font-size: 20px; }
-
-.mix-hdg_cap { text-transform: uppercase; }
-```
 
 ## Object States
 
 States are special class extensions that represent the various states an object may be in - often used in conjunction with Javascript. States are indicated with the "is" prefix before the extension name.
 
 ```html
-<div class="object object_isState"> ... </div>
+<div class="object object-is-active"> ... </div>
 ```
 
 ```html
-<a href="#" class="navItem navItem_isActive"> ... </a>
+<a href="#" class="nav-item nav-item-is-active"> ... </a>
 ```
 
 ```css
@@ -211,8 +181,8 @@ Right to left, this tells us we're dealing with: The status element which is a s
 
 ```html
 <div class="cta">
-    <div class="cta-bd cta-bd_highlight">
-        <div class="cta-bd-status cta-bd_hightlight-status"> ... </div>
+    <div class="cta-body cta-body-highlight">
+        <div class="cta-body-status cta-body-hightlight-status"> ... </div>
     </div>
 </div>
 ```
@@ -286,14 +256,14 @@ The classes that make up separate objects should not be combined in the DOM - th
 ```html
 <!-- DO -->
 <div class="grid">
-    <div class="grid-col grid-col_1of2">
-        <div class="someModule"> ... </div>
+    <div class="grid-col grid-col-1of2">
+        <div class="some-module"> ... </div>
     </div>
 </div>
 
 <!-- DO NOT -->
 <div class="grid">
-    <div class="someModule grid-col grid-col_1of2">
+    <div class="some-module grid-col grid-col-1of2">
         ...
     </div>
 </div>
